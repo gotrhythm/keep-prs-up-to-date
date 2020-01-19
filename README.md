@@ -1,44 +1,65 @@
-# list pull requests action
-Put outputs pull requests list.
+This github action is built to keep your PR's up to date.
 
-## Inputs
-### token
-github token.
+On a push to your main branch, this will find all open PR's with a
+particular tag and merge the main branch (name is configurable) into the PR's.
 
-### labels
-List pull requests that match the specified label.  
-json array string (ex. `["WFR","ASAP"]`)
+This can be useful for a large team with a long(ish) build time to
+avoid developers from having to keep up with multiple pushes to the
+main branch.
 
-## Outputs
-### pulls
-List pull requests string.  
-format
+With the label specification, it is an opt-in action so that
+developers who prefer to manage their own branches will be unaffected.
 
-```
-Pull Request Title 1
-https://github.com/buildsville/list-pull-requests/pull/1
----
-Pull Request Title 2
-https://github.com/buildsville/list-pull-requests/pull/2
-```
+Usage
+------
 
-## Example usage
-```
-name: remind review
+Assuming you want to auto merge a branch called `development` into all
+PR's with the label `automerge development`, add a workflow file to
+your `.github/workflows` with the following:
+
+```yaml
+name: Merge main into PR branches labeled "automerge development"
+
 on:
-  schedule:
-    - cron: '0 15 * * *'
+  push:
+    branches:
+      - development
 jobs:
-  send_pull_requests:
+  get_pull_requests:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Stay up to date with development
     steps:
-      - name: listPullRequests
-        uses: buildsville/list-pull-requests@v1
-        id: list
+      - uses: rcode5/keep-prs-up-to-date@master
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          labels: '["WFR"]'
-      - name: output
-        run: echo '${{ steps.list.outputs.pulls }}'
+          token: ${{github.token}}
+          default_branch: development
+          labels: "automerge main"
 ```
+
+
+You can also force this auto-merge on every pr with the `all` parameter.
+
+```yaml
+name: Merge main into PR branches labeled "automerge development"
+
+on:
+  push:
+    branches:
+      - development
+jobs:
+  get_pull_requests:
+    runs-on: ubuntu-latest
+    name: Stay up to date with development
+    steps:
+      - uses: rcode5/keep-prs-up-to-date@master
+        with:
+          token: ${{github.token}}
+          default_branch: development
+          all: true
+```
+
+
+Development
+------------
+
+Edit the `index.js` and run `yarn build` to build the `dist` version.

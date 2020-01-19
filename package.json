@@ -3,15 +3,18 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "build": "ncc build index.js --license WTFPL.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@actions/core": "^1.2.1",
+    "@actions/core": "^1.2.6",
     "@actions/github": "^2.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@vercel/ncc": "^0.30.0"
+  },
   "description": ""
 }

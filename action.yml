@@ -1,20 +1,19 @@
-name: 'List Pull Requests'
-description: 'list and put output pull requests'
-branding:
-  icon: 'bell'  
-  color: 'yellow'
+name: 'Keep PRs up to date'
+description: 'Merge default branch into open pull requests'
 inputs:
   token:
     description: 'github token'
     required: true
     default: ''
   labels:
-    description: 'require labels to list (JSON array string)'
+    description: 'only merge into PRs with this label. You cannot specify this value *and* the all option'
     required: false
-    default: '[ "WFR" ]'
-outputs:
-  result:
-    description: 'pull request string'
+  all:
+    description: 'ignore labels and update all PRs.  You cannot specify this flag *and* set labels'
+    required: false
+    default: false
+  default_branch:
+    description: 'the branch that should get auto merged into PRs. e.g. development'
 runs:
   using: 'node12'
   main: 'dist/index.js'
