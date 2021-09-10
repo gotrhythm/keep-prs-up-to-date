@@ -18,7 +18,7 @@ PR's with the label `automerge development`, add a workflow file to
 your `.github/workflows` with the following:
 
 ```yaml
-name: Merge main into PR branches labeled "automerge development"
+name: Merge development into PR branches labeled "automerge development"
 
 on:
   push:
@@ -29,18 +29,18 @@ jobs:
     runs-on: ubuntu-latest
     name: Stay up to date with development
     steps:
-      - uses: rcode5/keep-prs-up-to-date@master
+      - uses: gotrhythm/keep-prs-up-to-date@main
         with:
           token: ${{github.token}}
           default_branch: development
-          labels: "automerge main"
+          labels: "automerge development"
 ```
 
 
 You can also force this auto-merge on every pr with the `all` parameter.
 
 ```yaml
-name: Merge main into PR branches labeled "automerge development"
+name: Merge development into *all* PR branches
 
 on:
   push:
